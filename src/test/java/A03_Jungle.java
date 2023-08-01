@@ -8,6 +8,6 @@ public class A03_Jungle extends TB{
         pause(1000);
         reg();
         pause(1000);
-        getMusik();
+        //getMusik();
     }
 }

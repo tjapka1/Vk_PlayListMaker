@@ -8,6 +8,6 @@ public class A09_HB2 extends TB{
         pause(1000);
         reg();
         pause(1000);
-        getMusik();
+        //getMusik();
     }
 }

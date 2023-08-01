@@ -8,47 +8,20 @@ import java.time.Duration;
 import java.util.List;
 
 public class TB {
-
+    private final String VK_LOGIN = "+4915226858002";
+    private final String VK_PASSWORD = "14041988";
     public WebDriver driver;
 
-      public void setUp(String url){
-        System.setProperty("webdriver.chrome.driver","A:\\tools\\chromedriver.exe");
-//        ChromeOptions options = new ChromeOptions();
-//        options.addArguments("remote-allow-origins=*");
+    public void setUp(String url){
+      System.setProperty("webdriver.chrome.driver","A:\\tools\\chromedriver.exe");
         driver = new ChromeDriver();
 
-        //installPlugin();
         driver.get(url);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1000));
-
-
-    }
-    public void installPlugin (){
-        driver.get("https://chrome.google.com/webstore/detail/vkd-%D1%81%D0%BA%D0%B0%D1%87%D0%B0%D1%82%D1%8C-%D0%BC%D1%83%D0%B7%D1%8B%D0%BA%D1%83-%D0%B8-%D0%B2%D0%B8%D0%B4%D0%B5/faaapecbbejcllckafljlleeiopokmij/related");
-        driver.findElement(By.className("webstore-test-button-label")).click();
-        pause(20000);
-    }
-
-
-    public void scroll(int counter){
-         int count=0;
-        while (count==counter){
-        scrolUnt();
-        pause(1000);
-        count++;
-        }
-    }
-
-    private void scrolUnt() {
-        clickWithJSExecutor(0, 1000);
-    }
-    private void scrolOb() {
-        clickWithJSExecutor(0, -1000);
-    }
-
-
-    public void tearDown() {driver.quit();}
+     }
+    public void tearDown() {
+        driver.quit();}
     public void pause(int millis){
         try {
             Thread.sleep(millis);
@@ -61,79 +34,109 @@ public class TB {
         js.executeScript("window.scrollBy(" + x + "," + y + ")");
         //element.click();
     }
+    public void music(String url, int countScroll, String funk){
+        setUp(url);
+        pause(1000);
+        reg();
+        pause(1000);
+        scrollAllPage(countScroll);
+        pause(1000);
+        switch (funk){
+            case "add":
+                getADDOneTrack();
+                break;
+            case "play":
+                getPlayOneTrack();
+                break;
+            default:
+                System.out.println("Error");
+        }
+        getADDOneTrack();
 
+    }
     public void reg() {
         driver.findElement(By.className("quick_login_button")).click();
-        driver.findElement(By.className("VkIdForm__input")).sendKeys("+4915226858002");
+        driver.findElement(By.className("VkIdForm__input")).sendKeys(VK_LOGIN);
         driver.findElement(By.className("FlatButton__in")).click();
         pause(1000);
-              driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div[1]/div/div/div/div/form/div[1]/div[3]/div[1]/div/input")).click();
-        driver.findElement(By.xpath("//*[@id=\"root\"]/div/div/div/div[1]/div/div/div/div/form/div[1]/div[3]/div[1]/div/input")).sendKeys("14041988");
+        driver.findElement(By.xpath("/html/body/div[1]/div/div/div/div/div[1]/div[2]/div/div/div/form/div[1]/div[3]/div[1]/div/input")).click();
+        pause(300);
+        driver.findElement(By.xpath("/html/body/div[1]/div/div/div/div/div[1]/div[2]/div/div/div/form/div[1]/div[3]/div[1]/div/input")).sendKeys(VK_PASSWORD);
         driver.findElement(By.className("vkuiButton__in")).click();
 
         pause(1000);
 
     }
-
-
-    public void getMusik() {
-        clickWithJSExecutor(0, 800);
-       while (true){
-       while (true) {
-//           openPost();
-           getADDOneTrack();
-           pause(10000);
-
-           }
-       }
+    public void openPost() {
+        WebElement post=driver.findElement(By.className("PostHeaderSubtitle__item"));
+        post.click();
+        pause(1000);
+        clickWithJSExecutor(0, 100);
+        pause(100);
     }
-
-    private void openPost() {
-          driver.findElement(By.className("wall_post_text")).click();
-    }
-
-    private void getPlayOneTrack() {
-        List<WebElement> tracs = driver.findElements(By.className("SecondaryAttachment__iconButton--audioPlay"));
-        System.out.println(tracs.size());
-
-        while (true) {
-
-            for (WebElement trak  : tracs) {
-                trak.click();
-                clickWithJSExecutor(0, 100);
-                System.out.println(trak.getText());
-                pause(11200);
-            }
-
-
-        openList();
-        }
-    }
-    private void getADDOneTrack() {
-        List<WebElement> traks = driver.findElements(By.id("add_24__Page-2"));
-        System.out.println(traks.size());
-
-        while (true) {
-
-            for (WebElement trak : traks) {
-                trak.click();
-                clickWithJSExecutor(0, 100);
-                System.out.println(trak.getText());
+    public void scrollAllPage(int countScroll) {
+        int count = 0;
+        boolean scrollDown = true;
+        boolean scrollUp = false;
+            do {
+                clickWithJSExecutor(0, 10000);
                 pause(1200);
+                count++;
+                if (count==countScroll){
+                    scrollDown=false;
+                    scrollUp=true;}
+            }while (scrollDown);
+            pause(10000);
+            while (scrollUp){
+                clickWithJSExecutor(0,-10000);
+                pause(1200);
+                count--;
+                if (count==0){
+                    scrollUp=false;
+                }
             }
 
-        openList();
+
+
+    }
+    public String parserData(){
+        List<WebElement> dates = driver.findElements(By.xpath("//*[@id=\"post-29819975_165241\"]/div/div[1]/div[2]/div[2]/a/time"));
+        String dataString = "";
+        for (WebElement date : dates){
+            dataString=date.toString();
         }
+        System.out.println(dataString);
+        return dataString;
+    }
+    private static int EXECUT= 900;
+    public void getPlayOneTrack() {
+        clickWithJSExecutor(0, EXECUT);
+        //List<WebElement> playTracks = driver.findElements(By.xpath("/html/body/div[19]/div/div[1]/div[1]/div[3]/div/div[2]/div/div/div[3]/div/div/div[3]/div[2]/div"));
+        List<WebElement> playTracks = driver.findElements(By.className("SecondaryAttachment__iconButton--audioPlay"));
+        System.out.println("K o L   "+playTracks.size());
+
+            }
+    public void getADDOneTrack() {
+        clickWithJSExecutor(0, EXECUT);
+        List<WebElement> addTracks = driver.findElements(By.cssSelector("[data-task-click='SecondaryAttachment/addAudio']"));
+        changeTracks(addTracks);
+    }
+    private boolean changeTracks(List<WebElement> tracks) {
+        boolean ready =false;
+        boolean getAll=true;
+        if (tracks != null) {
+            while (getAll){
+            for (WebElement track : tracks) {
+                pause(500);
+                track.click();
+                clickWithJSExecutor(0, 100);
+                pause(1000);
+
+            }
+                            }
+        }
+        return ready;
     }
 
-    private void openList() {
-        driver.findElement(By.className("SecondaryAttachmentGroupShowMore__label")).click();
-    }
-
-    public void getPosts(){
-
-        clickWithJSExecutor(0, 2500);
-
-    }
 
 }

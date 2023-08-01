@@ -4,10 +4,8 @@ public class A01_MTHRAM extends TB{
 
     @Test
     public void m1(){
-        setUp("https://vk.com/technoxpamlife");
-        pause(1000);
-        reg();
-        pause(1000);
-        getMusik();
+        String url = "https://vk.com/technoxpamlife";
+        int countScroll = 40;
+        music(url, countScroll, "add");
     }
 }

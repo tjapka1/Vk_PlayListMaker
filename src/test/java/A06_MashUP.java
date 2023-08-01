@@ -8,6 +8,6 @@ public class A06_MashUP extends TB{
         pause(1000);
         reg();
         pause(1000);
-        getMusik();
+        openPost();
     }
 }
