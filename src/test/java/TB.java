@@ -8,8 +8,7 @@ import java.time.Duration;
 import java.util.List;
 
 public class TB {
-    private final String VK_LOGIN = "+4915226858002";
-    private final String VK_PASSWORD = "14041988";
+    Login login = new Login();
     public WebDriver driver;
 
     public void setUp(String url){
@@ -56,12 +55,12 @@ public class TB {
     }
     public void reg() {
         driver.findElement(By.className("quick_login_button")).click();
-        driver.findElement(By.className("VkIdForm__input")).sendKeys(VK_LOGIN);
+        driver.findElement(By.className("VkIdForm__input")).sendKeys(login.getUserName());
         driver.findElement(By.className("FlatButton__in")).click();
         pause(1000);
         driver.findElement(By.xpath("/html/body/div[1]/div/div/div/div/div[1]/div[2]/div/div/div/form/div[1]/div[3]/div[1]/div/input")).click();
         pause(300);
-        driver.findElement(By.xpath("/html/body/div[1]/div/div/div/div/div[1]/div[2]/div/div/div/form/div[1]/div[3]/div[1]/div/input")).sendKeys(VK_PASSWORD);
+        driver.findElement(By.xpath("/html/body/div[1]/div/div/div/div/div[1]/div[2]/div/div/div/form/div[1]/div[3]/div[1]/div/input")).sendKeys(login.getPassword());
         driver.findElement(By.className("vkuiButton__in")).click();
 
         pause(1000);
